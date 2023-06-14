@@ -78,11 +78,11 @@ public class SlackClient
         {
             { "token", _token },
             { "channels", _channel },
-            { "filename", file.Name + file.Extension },
+            { "filename", file.Name },
             { "initial_comment", text }
         };
         var content = new MultipartFormDataContent();
-        content.Add(new StreamContent(file.OpenRead()), "file", file.Name + file.Extension);
+        content.Add(new StreamContent(file.OpenRead()), "file", file.Name);
         foreach (var item in data)
         {
             content.Add(new StringContent(item.Value), item.Key);
