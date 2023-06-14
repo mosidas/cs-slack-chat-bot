@@ -1,0 +1,9 @@
+### post message
+POST https://slack.com/api/chat.postMessage
+Content-type: application/json;charset=UTF-8
+Authorization: Bearer xoxb-{}
+
+{
+    "channel": "{}",
+    "text": "Hello world"
+}

@@ -14,35 +14,40 @@ try
         channel:configuration["channel"]??throw new Exception("channel is null")
     );
 
+    //  <!channel>: mention all
+    //  <@{user-id}>: mention user
     var text = """
-    Hello World!!!!
-    cmwcowo
-    cowmcpkewlpdlwpll@#%$^&*()_+{}|:"<>?~`1234567890-=\][;/.,':smile:
+    <!channel>
+    <@{user-id}>
+    :slack::slack::slack::slack:
+    Hello World!!!!あいうえお漢字①
+    :slack::slack::slack::slack:
+    :smile:
     :fire:
     :lion_face:
     """;
 
     // post message
-    var responseJson = await client.PostMessageAsync(text);
-    if(responseJson is null)
-    {
-        throw new Exception("responseJson is null");
-    }
-    if(!responseJson.ok)
-    {
-        throw new Exception("responseJson.ok is false");
-    }
-    // replay message
-    // var tmp = await client.ReplayMessageAsync("Replay", responseJson.ts);
-
-    // upload file
-    // var file = new FileInfo(@"C:\tmp0\fmtoks\genba-neko.png");
-    // responseJson = await client.UploadFileAsync(file);
+    // var responseJson = await client.PostMessageAsync(text);
     // if(responseJson is null)
     // {
     //     throw new Exception("responseJson is null");
     // }
-    Console.WriteLine(responseJson.ok);
+    // if(!responseJson.Ok)
+    // {
+    //     throw new Exception($"responseJson.Ok:{responseJson.Ok}  responseJson.Error:{responseJson.Error}");
+    // }
+    // replay message
+    // var tmp = await client.ReplayMessageAsync("Replay", responseJson.ts);
+
+    // upload file
+    var file = new FileInfo(@"C:\tmp0\genba-neko.png");
+    var responseJson = await client.UploadFileAsync(file, text);
+    if(responseJson is null)
+    {
+        throw new Exception("responseJson is null");
+    }
+    Console.WriteLine(responseJson.Ok);
 }
 catch(Exception ex)
 {

@@ -24,7 +24,7 @@ public class SlackClient
     /// </summary>
     /// <param name="text"></param>
     /// <returns></returns>
-	public async Task<ResponceObject?> PostMessageAsync(string text)
+	public async Task<ResponcePostMessage?> PostMessageAsync(string text)
 	{
 		var data = new Dictionary<string, string>
         {
@@ -37,7 +37,7 @@ public class SlackClient
         var client = new HttpClient();
         var response = await client.PostAsync(_postMessageUri, content);
         var responseString = await response.Content.ReadAsStringAsync();
-        var responceJson = JsonSerializer.Deserialize<ResponceObject>(responseString);
+        var responceJson = JsonSerializer.Deserialize<ResponcePostMessage>(responseString);
 
         return responceJson;
 	}
@@ -48,7 +48,7 @@ public class SlackClient
     /// <param name="text"></param>
     /// <param name="ts"></param>
     /// <returns></returns>
-    public async Task<ResponceObject?> ReplayMessageAsync(string text, string ts)
+    public async Task<ResponcePostMessage?> ReplayMessageAsync(string text, string ts)
 	{
 		var data = new Dictionary<string, string>
         {
@@ -62,7 +62,7 @@ public class SlackClient
         var client = new HttpClient();
         var response = await client.PostAsync(_postMessageUri, content);
         var responseString = await response.Content.ReadAsStringAsync();
-        var responceJson = JsonSerializer.Deserialize<ResponceObject>(responseString);
+        var responceJson = JsonSerializer.Deserialize<ResponcePostMessage>(responseString);
 
         return responceJson;
 	}
@@ -72,16 +72,17 @@ public class SlackClient
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    public async Task<ResponceObject?> UploadFileAsync(FileInfo file)
+    public async Task<ResponceFileUpload?> UploadFileAsync(FileInfo file, string text)
     {
         var data = new Dictionary<string, string>
         {
             { "token", _token },
             { "channels", _channel },
-            { "filename", file.Name }
+            { "filename", file.Name + file.Extension },
+            { "initial_comment", text }
         };
         var content = new MultipartFormDataContent();
-        content.Add(new StreamContent(file.OpenRead()), "file", file.Name);
+        content.Add(new StreamContent(file.OpenRead()), "file", file.Name + file.Extension);
         foreach (var item in data)
         {
             content.Add(new StringContent(item.Value), item.Key);
@@ -90,7 +91,7 @@ public class SlackClient
         var client = new HttpClient();
         var response = await client.PostAsync(_fileUploadUri, content);
         var responseString = await response.Content.ReadAsStringAsync();
-        var responceJson = JsonSerializer.Deserialize<ResponceObject>(responseString);
+        var responceJson = JsonSerializer.Deserialize<ResponceFileUpload>(responseString);
 
         return responceJson;
     }
