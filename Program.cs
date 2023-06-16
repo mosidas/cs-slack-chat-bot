@@ -28,26 +28,30 @@ try
     """;
 
     // post message
-    // var responseJson = await client.PostMessageAsync(text);
-    // if(responseJson is null)
-    // {
-    //     throw new Exception("responseJson is null");
-    // }
-    // if(!responseJson.Ok)
-    // {
-    //     throw new Exception($"responseJson.Ok:{responseJson.Ok}  responseJson.Error:{responseJson.Error}");
-    // }
-    // replay message
-    // var tmp = await client.ReplayMessageAsync("Replay", responseJson.ts);
-
-    // upload file
-    var file = new FileInfo(@"C:\tmp0\genba-neko.png");
-    var responseJson = await client.UploadFileAsync(file, text);
+    var responseJson = await client.PostMessageAsync(text);
     if(responseJson is null)
     {
         throw new Exception("responseJson is null");
     }
-    Console.WriteLine(responseJson.Ok);
+    if(!responseJson.Ok)
+    {
+        throw new Exception($"responseJson.Ok:{responseJson.Ok}  responseJson.Error:{responseJson.Error}");
+    }
+    else
+    {
+        Console.WriteLine(responseJson.Ok);
+    }
+    // replay message
+    // var tmp = await client.ReplayMessageAsync("Replay", responseJson.ts);
+
+    // // upload file
+    // var file = new FileInfo(@"C:\tmp0\genba-neko.png");
+    // var res = await client.UploadFileAsync(file, text);
+    // if(res is null)
+    // {
+    //     throw new Exception("responseJson is null");
+    // }
+    // Console.WriteLine(res.Ok);
 }
 catch(Exception ex)
 {
